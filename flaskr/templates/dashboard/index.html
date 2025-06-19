@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Route Optimization</title>
+  </head>
+  <body>
+    <h2>Enter coordinates (lat,lon per line):</h2>
+    <form method="post" action="/dash">
+      <textarea
+        name="coords"
+        rows="10"
+        cols="50"
+        placeholder="-13.96692,33.77313&#10;-13.95844,33.78156&#10;-13.96123,33.78891"
+      ></textarea
+      ><br /><br />
+      <button type="submit">Get Optimized Route</button>
+    </form>
+    <p>
+      <strong>Format:</strong> One coordinate pair per line in format:
+      latitude,longitude
+    </p>
+    <p>
+      <strong>Example:</strong><br />
+      -13.96692,33.77313<br />
+      -13.95844,33.78156<br />
+      -13.96123,33.78891
+    </p>
+  </body>
+</html>
