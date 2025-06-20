@@ -34,6 +34,7 @@ def register():
                     "INSERT INTO user (username, password) VALUES (?, ?)",
                     (username, generate_password_hash(password)),
                 )
+
                 db.commit()
             except db.IntegrityError:
                 error = f"User {username} is already registered."

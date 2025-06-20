@@ -1,8 +1,10 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
 from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
-from flaskr.db import get_db
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
@@ -14,17 +16,15 @@ DB_FILE = "data.db"
 
 bp = Blueprint("dashboard", __name__)
 # Set your ORS API key here
-ORS_API_KEY = os.getenv("HEIGHT") or "your-api-key-here"
+# ORS_API_KEY = os.getenv("HEIGHT") or "your-api-key-here"
 
 # Add error handling for API key
-if ORS_API_KEY == "your-api-key-here":
-    print(
-        "WARNING: Please set your ORS_API_KEY environment variable or replace 'your-api-key-here' with your actual API key"
-    )
+# if ORS_API_KEY == "your-api-key-here":
+# print(
+#     "WARNING: Please set your ORS_API_KEY environment variable or replace 'your-api-key-here' with your actual API key"
+# )
 
-client = openrouteservice.Client(
-    key=""
-)
+client = openrouteservice.Client(key=config["ORS"])
 # TODO: intergrate with database
 
 
@@ -114,3 +114,63 @@ def path():
 
     except Exception as e:
         return f"Error processing path: {e}", 500
+
+
+@bp.route("/get_locations")
+def get_locations():
+    db = get_db()
+    locations = db.execute("SELECT coordinates FROM location").fetchall()
+    coords = []
+
+    for row in locations:
+        # If using sqlite3.Row: row["coordinates"]
+        # If using default tuple: row[0]
+        coord_str = (
+            row["coordinates"]
+            if isinstance(row, dict) or hasattr(row, "keys")
+            else row[0]
+        )
+        if coord_str.strip():
+            try:
+                lat, lon = map(float, coord_str.strip().split(","))
+                coords.append((lat, lon))
+            except ValueError:
+                # skip malformed coordinates
+                continue
+    print(coords)
+
+    route = get_walkable_route(coords)
+    if route is None:
+        return (
+            "Error: Could not get route. Please check your API key and coordinates.",
+            500,
+        )
+
+    return render_template(
+        "dashboard/result.html", route_geojson=json.dumps(route), coords=coords
+    )
+
+
+# def make_post(raw):
+#         try:
+#             if not raw.strip():
+#                 return "Please enter coordinates", 400
+#
+#             coords = []
+#             for line in raw.strip().splitlines():
+#                 if line.strip():  # Skip empty lines
+#                     lat, lon = map(float, line.split(","))
+#                     coords.append((lat, lon))
+#
+#             if len(coords) < 2:
+#                 return "Please enter at least 2 coordinates", 400
+#
+#             coords_str = ";".join([f"{lat},{lon}" for lat, lon in coords])
+#             return redirect(url_for("dashboard.path", coords_str=coords_str))
+#
+#         except ValueError as e:
+#             return f"Invalid coordinate format. Please use 'lat,lon' format: {e}", 400
+#         except Exception as e:
+#             return f"Error processing coordinates: {e}", 400
+#
+#         return render_template("dashboard/index.html")
