@@ -151,6 +151,22 @@ def get_locations():
     )
 
 
+@bp.route("/report")
+def report():
+    db = get_db()
+    reports = db.execute("SELECT * FROM report").fetchall()
+    print(reports)
+    return render_template("dashboard/reports.html", reports=reports)
+
+
+@bp.route("/locations")
+def locations():
+    db = get_db()
+    locations = db.execute("SELECT * FROM location").fetchall()
+    print(locations)
+    return render_template("dashboard/location.html", locations=locations)
+
+
 # def make_post(raw):
 #         try:
 #             if not raw.strip():

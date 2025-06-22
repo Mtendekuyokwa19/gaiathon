@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}Dumpsite Detector Dashboard{%
+endblock %} {% block content %}
+<h1>Welcome to the Illegal Dumpsite Detection System</h1>
+
+<p>
+  This application leverages satellite imagery and AI to detect illegal waste
+  dumpsites.
+</p>
+
+<hr />
+
+<div class="dashboard-links">
+  <a href="{{ url_for('dumpsite.upload_file') }}" class="btn"
+    >Upload Image for Analysis</a
+  ><br /><br />
+  <a href="{{ url_for('dumpsite.coordinates') }}" class="btn"
+    >Analyze by Coordinates</a
+  ><br /><br />
+  <a href="{{ url_for('dumpsite.batch_upload') }}" class="btn"
+    >Batch Image Upload</a
+  ><br /><br />
+  <a href="{{ url_for('dumpsite.history') }}" class="btn"
+    >View Analysis History</a
+  ><br /><br />
+  <a href="{{ url_for('dumpsite.about') }}" class="btn">About This System</a>
+</div>
+
+{% endblock %}

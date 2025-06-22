@@ -2,22 +2,24 @@
 <html>
   <head>
     <title>Optimized Route</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
     />
     <style>
       #map {
-        height: 500px;
-        width: 100%;
+        height: 400px;
+        width: 70%;
         margin: 20px 0;
       }
-      .info-panel {
-        background: #f5f5f5;
-        padding: 15px;
-        margin: 10px 0;
-        border-radius: 5px;
-      }
+      /* .info-panel { */
+      /*   background: #f5f5f5; */
+      /*   padding: 15px; */
+      /*   margin: 10px 0; */
+      /*   border-radius: 5px; */
+      /* } */
       .coord-list {
         margin: 10px 0;
       }
@@ -29,106 +31,163 @@
       }
     </style>
   </head>
-  <body>
-    <h1>Optimized Walking Route</h1>
+  <body class="bg-[#fbf1c7] h-screen flex flex-col justify-between">
+    <nav
+      class="bg-[#ebdbb2] p-4 flex border border-b-black border-b-2 justify-evenly"
+    >
+      <a href="/" class="text-lg font-bold">WasteOptimizer</a>
+      <ul class="flex gap-2 text-md lowercase">
+        {% if g.user %}
+        <li><span>{{ g.user['username'] }}</span></li>
+        <li><a href="{{ url_for('auth.logout') }}">Log Out</a> {% else %}</li>
 
-    <div class="info-panel">
-      <h3>Route Information</h3>
-      <p>
-        <strong>Total Distance:</strong>
-        <span id="distance">Calculating...</span>
-      </p>
-      <p>
-        <strong>Estimated Duration:</strong>
-        <span id="duration">Calculating...</span>
-      </p>
-      <p><strong>Number of Waypoints:</strong> {{ coords|length }}</p>
-    </div>
+        <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+        <li>
+          <a href="{{ url_for('auth.login') }}">Log In</a>
+          {% endif %}
+        </li>
+      </ul>
+    </nav>
+    <main class="w-full h-full flex p-2">
+      <section class="border rounded h-full w-1/6 flex justify-center">
+        <ul class="flex gap-2 flex-col text-lg font-bold py-10">
+          <li class=""><a href="/get_locations">Home</a></li>
+          <li><a href="/report">Report</a></li>
+          <li>Github</li>
+          <li><a href="/locations">Locations</a></li>
+        </ul>
+      </section>
 
-    <div id="map"></div>
+      <section class="w-5/6">
+        <section>
+          <section id="" class="flex info-panel gap-8 px-32">
+            <section
+              class="bg-[#ebdbb2] border rounded-md w-1/3 h-32 flex flex-col justify-center px-16 text-black"
+            >
+              <p class="font-bold text-3xl">
+                {{ coords|length }} <span>+</span>
+              </p>
+              <p>Number of locations</p>
+            </section>
 
-    <div class="info-panel">
-      <h3>Waypoints</h3>
-      <div class="coord-list">
-        {% for coord in coords %}
-        <div class="coord-item">
-          Point {{ loop.index }}: {{ coord[0] }}, {{ coord[1] }}
-        </div>
-        {% endfor %}
-      </div>
-    </div>
+            <section
+              class="bg-[#ebdbb2] border rounded-md w-1/3 h-32 flex flex-col justify-center px-16 text-black"
+            >
+              <p class="font-bold text-3xl">
+                <span id="duration"></span>
+              </p>
 
-    <div class="info-panel">
-      <a href="/">← Plan Another Route</a>
-    </div>
+              <p>Estimated time of travel</p>
+            </section>
+            <section
+              class="bg-[#ebdbb2] border rounded-md w-1/3 h-32 flex flex-col justify-center px-16 text-black"
+            >
+              <p class="font-bold text-3xl">
+                <span id="distance"></span>
+              </p>
+              <p>Estimated distance</p>
+            </section>
+          </section>
+          <section class="flex justify-center items-center">
+            <div class="h-3/4 w-1/2" id="map"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+    <!-- <h1>Optimized Walking Route</h1> -->
+    <!---->
+    <!-- <div class="info-panel"> -->
+    <!--   <h3>Route Information</h3> -->
+    <!--   <p> -->
+    <!--     <strong>Total Distance:</strong> -->
+    <!--     <span id="distance">Calculating...</span> -->
+    <!--   </p> -->
+    <!--   <p> -->
+    <!--     <strong>Estimated Duration:</strong> -->
+    <!--     <span id="duration">Calculating...</span> -->
+    <!--   </p> -->
+    <!--   <p><strong>Number of Waypoints:</strong> {{ coords|length }}</p> -->
+    <!-- </div> -->
 
+    <!---->
+    <!-- <div class="info-panel"> -->
+    <!--   <h3>Waypoints</h3> -->
+    <!--   <div class="coord-list"> -->
+    <!--     {% for coord in coords %} -->
+    <!--     <div class="coord-item"> -->
+    <!--       Point {{ loop.index }}: {{ coord[0] }}, {{ coord[1] }} -->
+    <!--     </div> -->
+    <!--     {% endfor %} -->
+    <!--   </div> -->
+    <!-- </div> -->
+    <!---->
+    <!-- <div class="info-panel"> -->
+    <!--   <a href="/">← Plan Another Route</a> -->
+    <!-- </div> -->
+    <!---->
+
+    <footer class="border border-t-2 bg-[#ebdbb2] p-2">
+      <p>2024 Build-green</p>
+    </footer>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-      // Get the route data from Flask
-      const routeData = {{ route_geojson|safe }};
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get the route data from Flask
+        const routeData = {{ route_geojson|safe }};
+        const coords = {{ coords|tojson }};
+        console.log('Route data:', routeData);
 
-      console.log('Route data:', routeData);
+        // Initialize the map
+        const map = L.map('map');
 
-      // Initialize the map
-      const map = L.map('map');
-
-      // Add OpenStreetMap tiles
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
           attribution: '© OpenStreetMap contributors'
-      }).addTo(map);
+        }).addTo(map);
 
-      if (routeData && routeData.features && routeData.features.length > 0) {
-          // Add the route to the map
+        if (routeData && routeData.features && routeData.features.length > 0) {
           const routeLayer = L.geoJSON(routeData, {
-              style: {
-                  color: '#3388ff',
-                  weight: 5,
-                  opacity: 0.8
-              }
+            style: {
+              color: '#3388ff',
+              weight: 5,
+              opacity: 0.8
+            }
           }).addTo(map);
 
           // Add markers for waypoints
-          const coords = {{ coords|tojson }};
           coords.forEach((coord, index) => {
-              const marker = L.marker([coord[0], coord[1]]).addTo(map);
-              marker.bindPopup(`Waypoint ${index + 1}<br>Lat: ${coord[0]}<br>Lon: ${coord[1]}`);
+            const marker = L.marker([coord[0], coord[1]]).addTo(map);
+            marker.bindPopup(`Waypoint ${index + 1}<br>Lat: ${coord[0]}<br>Lon: ${coord[1]}`);
           });
 
-          // Fit the map to show the entire route
+          // Fit map to bounds
           map.fitBounds(routeLayer.getBounds(), { padding: [20, 20] });
 
-          // Extract and display route information
-          const feature = routeData.features[0];
-          if (feature.properties) {
-              const summary = feature.properties.summary;
-              if (summary) {
-                  // Distance in meters, convert to km
-                  const distance = (summary.distance / 1000).toFixed(2);
-                  document.getElementById('distance').textContent = distance + ' km';
+          // Extract and display route info
+          const summary = routeData.features[0]?.properties?.summary;
+          if (summary) {
+            const distance = (summary.distance / 1000).toFixed(2);
+            const duration = Math.round(summary.duration / 60);
+            document.getElementById('distance').textContent = distance + ' km';
 
-                  // Duration in seconds, convert to minutes
-                  const duration = Math.round(summary.duration / 60);
-                  document.getElementById('duration').textContent = duration + ' minutes';
-              }
+            document.getElementById('duration').textContent = duration + ' minutes';
           }
-      } else {
-          // No route data, just show the waypoints
-          const coords = {{ coords|tojson }};
+        } else {
+          // Just show markers
           if (coords.length > 0) {
-              const group = new L.FeatureGroup();
-
-              coords.forEach((coord, index) => {
-                  const marker = L.marker([coord[0], coord[1]]).addTo(map);
-                  marker.bindPopup(`Waypoint ${index + 1}<br>Lat: ${coord[0]}<br>Lon: ${coord[1]}`);
-                  group.addLayer(marker);
-              });
-
-              map.fitBounds(group.getBounds(), { padding: [20, 20] });
+            const group = new L.FeatureGroup();
+            coords.forEach((coord, index) => {
+              const marker = L.marker([coord[0], coord[1]]).addTo(map);
+              marker.bindPopup(`Waypoint ${index + 1}<br>Lat: ${coord[0]}<br>Lon: ${coord[1]}`);
+              group.addLayer(marker);
+            });
+            map.fitBounds(group.getBounds(), { padding: [20, 20] });
           }
 
           document.getElementById('distance').textContent = 'Route not available';
           document.getElementById('duration').textContent = 'Route not available';
-      }
+        }
+      });
     </script>
   </body>
 </html>

@@ -1,0 +1,67 @@
+
+<!-- templates/dumpsite/coordinates.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Analyze Coordinates - Illegal Dumpsite Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <header>
+    <h1>Illegal Dumpsite Detection by Coordinates</h1>
+    <nav>
+      <a href="{{ url_for('dumpsite.index') }}">Home</a> |
+      <a href="{{ url_for('dumpsite.upload_file') }}">Upload Image</a> |
+      <a href="{{ url_for('dumpsite.batch_upload') }}">Batch Upload</a> |
+      <a href="{{ url_for('dumpsite.about') }}">About</a>
+    </nav>
+  </header>
+
+  <!-- Flash messages for errors or info -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for category, message in messages %}
+          <li class="flash {{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    <form method="POST" action="{{ url_for('dumpsite.coordinates') }}">
+      <label for="latitude">Latitude (-90 to 90):</label><br />
+      <input
+        type="number"
+        id="latitude"
+        name="latitude"
+        step="any"
+        min="-90"
+        max="90"
+        required
+        value="{{ request.form.latitude or '' }}"
+      /><br /><br />
+
+      <label for="longitude">Longitude (-180 to 180):</label><br />
+      <input
+        type="number"
+        id="longitude"
+        name="longitude"
+        step="any"
+        min="-180"
+        max="180"
+        required
+        value="{{ request.form.longitude or '' }}"
+      /><br /><br />
+
+      <button type="submit">Analyze Location</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Illegal Dumpsite Detector</p>
+  </footer>
+</body>
+</html>
+

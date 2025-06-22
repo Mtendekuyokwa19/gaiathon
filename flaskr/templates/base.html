@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <title>{% block title %}{% endblock %} - Flaskr</title>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-<nav>
-  <h1>Flaskr</h1>
-  <ul>
+<body class="bg-[#fbf1c7] h-screen flex flex-col  justify-between">
+	
+<nav class="bg-[#ebdbb2] p-4 flex border border-b-black border-b-2 justify-evenly ">
+  <a href="/" class="text-lg font-bold">WasteOptimizer</a>
+  <ul class="flex gap-2 text-md lowercase">
     {% if g.user %}
     <li><span>{{ g.user['username'] }}</span></li>
     <li><a href="{{ url_for('auth.logout') }}">Log Out</a> {% else %}</li>
@@ -16,9 +18,51 @@
     </li>
   </ul>
 </nav>
-<section class="content">
+<dialog class="content">
   <header>{% block header %}{% endblock %}</header>
   {% for message in get_flashed_messages() %}
-  <div class="flash">{{ message }}</div>
+  <!-- <div class="flash">{{ message }}</div> -->
   {% endfor %} {% block content %}{% endblock %}
+</dialog>
+
+<section class="flex flex-col justify-center items-center p-8">
+<section class="gap-4 justify-center items-center flex flex-col">
+<div class="bg-[#ebdbb2] flex justify-center items-center w-36 text-xs p-2 border rounded-md">
+<p> EO powered app🚀</p>
+</div>
+<section class="flex flex-col gap-3 items-center justify-center">
+<h1 class="text-5xl font-bold">
+Optimize your waste management
+</h1>
+<p class="text-lg w-1/2 text-center">
+Transform waste management with route optimization, IoT and Eo tools.  
+his transformation empowers communities and authorities to make data-driven decisions for cleaner, more sustainable environments.
+</p>
+
+<button class="bg-[#0091ff] p-3 w-72 rounded-md text-black">
+<a href="/auth/register" class="flex gap-2 justify-center items-center"><span class="font-bold">🡪</span>Get started</a>
+</button>
 </section>
+</section>
+</section>
+
+<section class="flex gap-8 px-32">
+<section class="bg-[#ebdbb2] border rounded-md w-1/3 h-32 flex flex-col justify-center px-16  text-black">
+<p class="font-bold text-3xl">85%</p>
+<p>Average waste reduction</p>
+</section>
+
+<section class="bg-[#ebdbb2] border rounded-md w-1/3 h-32 flex flex-col justify-center px-16  text-black">
+<p class="font-bold text-3xl">24/7</p>
+<p>Real-time monitoring</p>
+</section>
+<section class="bg-[#ebdbb2] border rounded-md w-1/3 h-32 flex flex-col justify-center px-16  text-black">
+<p class="font-bold text-3xl">30%</p>
+<p>AI-powered and IoT driven</p>
+</section>
+</section>
+
+<footer class="border border-t-2 bg-[#ebdbb2] p-2 ">
+<p>2024 Build-green</p>
+</footer>
+</body>
