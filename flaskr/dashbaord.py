@@ -17,9 +17,6 @@ import os
 DB_FILE = "data.db"
 
 
-conn = sqlitecloud.connect(
-    "sqlitecloud://crzzc2ilhz.g1.sqlite.cloud:8860/chinook.sqlite?apikey=dlSn7ORb8jFlFnsOKxFGhfJDmDvC7Sgb35bIaabNujA"
-)
 bp = Blueprint("dashboard", __name__)
 # Set your ORS API key here
 # ORS_API_KEY = os.getenv("HEIGHT") or "your-api-key-here"
@@ -171,10 +168,6 @@ def locations():
     print(locations)
     return render_template("dashboard/location.html", locations=locations)
 
-
-cursor = conn.execute("SELECT * FROM sensor_data;")
-result = cursor.fetchone()
-print(result)
 
 # def make_post(raw):
 #         try:
