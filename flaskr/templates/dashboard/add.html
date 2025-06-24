@@ -1,0 +1,48 @@
+<!-- <form method="post"> -->
+<!--   <label for="username">Username</label> -->
+<!--   <input name="username" id="username" required /> -->
+<!--   <label for="password">Password</label> -->
+<!--   <input type="password" name="password" id="password" required /> -->
+<!--   <input type="submit" value="Register" /> -->
+<!-- </form> -->
+
+<!DOCTYPE html>
+<title>{% block title %}{% endblock %} - Flaskr</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<body class="bg-[#fbf1c7] h-screen flex flex-col  justify-between">
+
+<nav class="bg-[#ebdbb2] p-4 flex border border-b-black border-b-2 justify-evenly ">
+  <a href="/" class="text-lg font-bold">WasteOptimizer</a>
+  <ul class="flex gap-2 text-md lowercase">
+    {% if g.user %}
+    <li><span>{{ g.user['username'] }}</span></li>
+    <li><a href="{{ url_for('auth.logout') }}">Log Out</a> {% else %}</li>
+
+    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+    <li>
+      <a href="{{ url_for('auth.login') }}">Log In</a>
+      {% endif %}
+    </li>
+  </ul>
+</nav>
+
+<main class="flex justify-center flex-col items-center">
+<h1 class="font-bold uppercase text-lg">New User</h1>
+<form method="post" class="flex flex-col gap-2 bg-[#ebdbb2] p-5 rounded ">
+  <label for="location_name">location_name</label>
+  <input class="rounded border bg-white" name="location_name" id="location_name"  required />
+
+  <label for="owner">owner</label>
+  <input class="rounded bg-white border" type="text" name="owner" id="owner" required />
+  <label for="coordinates">coordinates</label>
+  <input class="rounded bg-white border" type="text" name="coordinates" id="coordinates" required />
+<button type="submit">submit</button>
+
+</form>
+</main>
+
+<footer class="border border-t-2 bg-[#ebdbb2] p-2 ">
+<p>2024 Build-green</p>
+</footer>
+</body>

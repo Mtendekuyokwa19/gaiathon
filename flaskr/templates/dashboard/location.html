@@ -43,6 +43,7 @@
 <li>  coordinates </li>
 <li>  owner </li>
 <li>  isfull </li>
+<li>  </li>
 </nav>
 <section>
         {% for location in locations %}
@@ -52,6 +53,7 @@
 <li> {{location[2]}}</li>
 <li> {{location[3]}}</li>
 <li> {{location[4]}}</li>
+<a class="text-red-600" href={{"delete/"+location[0]|string}}>delete</a>
 
 </ul>
         {% endfor %}

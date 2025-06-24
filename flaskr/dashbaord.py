@@ -1,5 +1,6 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from dotenv import dotenv_values
+from flaskr.detection import coordinates
 import sqlitecloud
 
 
@@ -122,7 +123,9 @@ def path():
 @bp.route("/get_locations")
 def get_locations():
     db = get_db()
-    locations = db.execute("SELECT coordinates FROM location").fetchall()
+    locations = db.execute(
+        "SELECT coordinates FROM location WHERE isfull='yes'"
+    ).fetchall()
     print(f"location{locations}")
     coords = []
 
@@ -167,6 +170,45 @@ def locations():
     locations = db.execute("SELECT * FROM location").fetchall()
     print(locations)
     return render_template("dashboard/location.html", locations=locations)
+
+
+@bp.route("/delete/<int:id>", methods=["GET"])
+def delete_route(id):
+    id = int(id)
+    db = get_db()
+    route = db.execute("SELECT * FROM location WHERE id = ?", (id,)).fetchone()
+
+    if route is None:
+        flash("Route not found.")
+
+    else:
+        db.execute("DELETE FROM location WHERE id = ?", (id,))
+        db.commit()
+        flash("Route deleted successfully.")
+
+    return redirect(url_for("dashboard.get_locations"))
+
+
+@bp.route("/add", methods=["GET", "POST"])
+def add_location():
+    if request.method == "POST":
+        location_name = request.form["location_name"]
+        coordinates = request.form["coordinates"]
+        owner = request.form["owner"]
+
+        if not location_name or not coordinates or not owner:
+            flash("Name, latitude, and longitude are required.")
+        else:
+            db = get_db()
+            db.execute(
+                "INSERT INTO location (location_name, coordinates, owner) VALUES ( ?, ?, ?)",
+                (location_name, coordinates, owner),
+            )
+            db.commit()
+            flash("Location added successfully!")
+            return redirect(url_for("dashboard.get_locations"))
+
+    return render_template("dashboard/add.html")
 
 
 # def make_post(raw):
