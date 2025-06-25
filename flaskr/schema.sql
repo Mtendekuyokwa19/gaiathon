@@ -29,7 +29,7 @@ CREATE TABLE location (
   location_name TEXT NOT NULL,
   coordinates TEXT NOT NULL,
   owner TEXT NOT NULL,
-  isfull TEXT NOT NULL
+  isfull TEXT NOT NULL DEFAULT 'yes'
 );
 CREATE TABLE post (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
