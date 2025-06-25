@@ -1,11 +1,19 @@
 [project]
 name = "flaskr"
 version = "1.0.0"
-description = "a gaiathon project"
+description = "A Gaiathon project with Flask and Detectron2"
 dependencies = [
     "flask",
+    "opencv-python-headless",  
+    "numpy",
+    "detectron2 @ git+https://github.com/facebookresearch/detectron2.git",  
+    "python-dotenv",
+    "openrouteservice",
+    "torch",  
+    "torchvision",  
 ]
 
 [build-system]
 requires = ["flit_core<4"]
 build-backend = "flit_core.buildapi"
+
