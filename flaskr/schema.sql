@@ -10,7 +10,14 @@ CREATE TABLE user (
   password TEXT NOT NULL
 );
 
-
+CREATE TABLE sensor_data (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  time TEXT,
+  date TEXT,
+  location TEXT,
+  ultrasonic_value REAL,
+  gas_sensor_value REAL
+);
 CREATE TABLE report (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   location_name TEXT NOT NULL,

@@ -1,6 +1,8 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from dotenv import dotenv_values
 
+# from detectro import main
+
 config = dotenv_values(".env")
 from werkzeug.exceptions import abort
 
@@ -155,8 +157,15 @@ def get_locations():
 def report():
     db = get_db()
     reports = db.execute("SELECT * FROM report").fetchall()
-    print(reports)
     return render_template("dashboard/reports.html", reports=reports)
+
+
+@bp.route("/sensor")
+def sensor():
+    db = get_db()
+    sensors = db.execute("SELECT * FROM sensor_data").fetchall()
+    print(sensors)
+    return render_template("dashboard/sensor.html", sensors=sensors)
 
 
 @bp.route("/locations")
@@ -167,26 +176,23 @@ def locations():
     return render_template("dashboard/location.html", locations=locations)
 
 
-# def make_post(raw):
-#         try:
-#             if not raw.strip():
-#                 return "Please enter coordinates", 400
+# @bp.route("/dumpsite", methods=["GET", "POST"])
+# def dumpsite():
+#     if request.method == "POST":
+#         # check if the post request has the file part
+#         if "file" not in request.files:
+#             flash("No file part")
+#             return redirect(request.url)
+#         file = request.files["file"]
+#         # If the user does not select a file, the browser submits an
+#         # empty file without a filename.
+#         if file.filename == "":
+#             flash("No selected file")
+#             return redirect(request.url)
+#         if file:
+#             import datetime
 #
-#             coords = []
-#             for line in raw.strip().splitlines():
-#                 if line.strip():  # Skip empty lines
-#                     lat, lon = map(float, line.split(","))
-#                     coords.append((lat, lon))
-#
-#             if len(coords) < 2:
-#                 return "Please enter at least 2 coordinates", 400
-#
-#             coords_str = ";".join([f"{lat},{lon}" for lat, lon in coords])
-#             return redirect(url_for("dashboard.path", coords_str=coords_str))
-#
-#         except ValueError as e:
-#             return f"Invalid coordinate format. Please use 'lat,lon' format: {e}", 400
-#         except Exception as e:
-#             return f"Error processing coordinates: {e}", 400
-#
-#         return render_template("dashboard/index.html")
+#             filename = str(file.filename) + str(datetime.datetime.now())
+#             file.save(os.path.join("./uploads", filename))
+#             return redirect(url_for("dashboard.dash"))
+#     return render_template("dashboard/dumpsite.html")
