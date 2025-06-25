@@ -1,6 +1,7 @@
 # 🗺️ Waste Management Optimizer
 
 Waste Management Optimizer is a web application designed to plan and visualize optimized waste collection routes. It uses geospatial tools, real-time height data, and a sleek UI to support environmentally conscious waste disposal.
+![Photo of overall elements](./mini.png)
 
 ## 🚀 Features
 
