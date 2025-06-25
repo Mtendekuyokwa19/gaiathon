@@ -41,24 +41,61 @@ source .venv/bin/activate
 ### 3. Install dependencies
 
 ```bash
-pip install -r requirements.txt
+pip install  .
 ```
-
-Make sure `requirements.txt` includes packages like:
-
-```text
-flask
-requests
-jinja2
-```
-
-### 4. Set up environment variables
-
-Create a `.env` file in the root directory:
 
 ```env
 ORS_API_KEY=your_openrouteservice_api_key
 ```
+
+## Setting Up Detectro with Flask
+
+This project integrates the Detectron2 object detection framework into a Flask web application for detecting dumpsites. If you're cloning this repository for the first time, follow the steps below to set up your environment.
+
+### 4. Set up Detectron2
+
+Detectron2 must be installed from source:
+
+```bash
+pip install git+https://github.com/facebookresearch/detectron2.git
+```
+
+Ensure your system meets the requirements for PyTorch and OpenCV.
+
+### 5. Dataset and model setup
+
+**Important Notes:**
+
+- The trained model weights (`model_final.pth`) have been removed from the repository because they exceed GitHub’s 100MB file size limit.
+- You will need to retrain the model or obtain the `output/model_final.pth` file separately.
+- The dataset used for training has **not been uploaded** to this repository. Place your dataset in the appropriate directory (e.g., `./dataset/train/`) following COCO-style annotations or your custom format.
+
+To train from the dataset you will need to run the train.py. This will create output/ folder in detectron and you will move it to the uppeer layer of the folder so that flask can easily access it
+
+```bash
+python train.py
+```
+
+Make sure all the images have the same widht and height
+
+```bash
+python resize.py
+
+```
+
+Edit the pathway inside resize if your data is somewhere else
+
+### 6. Running the app
+
+Ensure your `.env` file is configured correctly with your OpenRouteService API key.
+
+Then, run the Flask application:
+
+```bash
+flask --app flaskr run --debug
+```
+
+---
 
 (You can get a free ORS API key from [heigit.org](https://heigit.org))
 
