@@ -266,7 +266,7 @@ def delete_route(id):
         db.commit()
         flash("Route deleted successfully.")
 
-    return redirect(url_for("dashboard.get_locations"))
+    return redirect(url_for("dashboard.locations"))
 
 
 @bp.route("/add", methods=["GET", "POST"])
@@ -286,7 +286,7 @@ def add_location():
             )
             db.commit()
             flash("Location added successfully!")
-            return redirect(url_for("dashboard.get_locations"))
+            return redirect(url_for("dashboard.locations"))
 
     return render_template("dashboard/add.html")
 
