@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optimized Route</title>
-
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
       rel="stylesheet"
@@ -46,6 +47,7 @@
 <li>  coordinates </li>
 <li>  owner </li>
 <li>  isfull </li>
+<li>  </li>
 </nav>
 <section>
         {% for location in locations %}
@@ -55,6 +57,7 @@
 <li> {{location[2]}}</li>
 <li> {{location[3]}}</li>
 <li> {{location[4]}}</li>
+<a class="text-red-600" href={{"delete/"+location[0]|string}}>delete</a>
 
 </ul>
         {% endfor %}
