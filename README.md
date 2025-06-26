@@ -7,6 +7,8 @@ Waste Management Optimizer is a web application designed to plan and visualize o
 [![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
 [![Detectron2](https://img.shields.io/badge/Detectron2-AI%20Detection-red.svg)](https://github.com/facebookresearch/detectron2)
 
+![screenshot](./screenshot.png)
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -22,9 +24,7 @@ Waste Management Optimizer is a web application designed to plan and visualize o
 
 ## Overview
 
-Waste Management Optimizer is a web application designed to plan and visualize optimized waste collection routes. It uses geospatial tools, AI-powered dumpsite detection, and a sleek UI to support environmentally conscious waste disposal. The system integrates computer vision with route optimization to provide a comprehensive solution for urban waste management challenges.
-
-The application combines Detectron2-powered dumpsite detection with OpenRouteService route optimization to create an integrated platform for waste management planning and monitoring.
+This is a project that can be used to manage waste by combining IoT, Digital-platforms and AI. This improves the planning and monitoring of waste in a city with optimized routes, reports from citizens and even gas detection for bins containing dangerous material. This allows the trash collectors to be able to categorize the wastes
 
 ## System Architecture
 
