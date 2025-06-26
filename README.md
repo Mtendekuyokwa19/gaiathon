@@ -4,6 +4,7 @@ Waste Management Optimizer is a web application designed to plan and visualize o
 ![Photo of overall elements](./mini.png)
 
 [Mobile-app Guide](./EcoFriendlyApp/README.md)
+[Rasperry pi](./raspberrypi/README.md)
 
 ## 🚀 Features
 
