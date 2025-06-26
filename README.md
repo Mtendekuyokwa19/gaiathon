@@ -3,16 +3,14 @@
 Waste Management Optimizer is a web application designed to plan and visualize optimized waste collection routes. It uses geospatial tools, real-time height data, and a sleek UI to support environmentally conscious waste disposal.
 ![Photo of overall elements](./mini.png)
 
-<<<<<<< Ecofriendly
 [Mobile-app Guide](./EcoFriendlyApp/README.md)
 
 ## 🚀 Features
-=======
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
 [![Detectron2](https://img.shields.io/badge/Detectron2-AI%20Detection-red.svg)](https://github.com/facebookresearch/detectron2)
->>>>>>> master
 
 ![screenshot](./screenshot.png)
 
@@ -141,13 +139,15 @@ pip install git+https://github.com/facebookresearch/detectron2.git
 ```
 
 ### 4. Environment Configuration
+
 =======
-pip install  .
-```
+pip install .
+
+````
 
 ```env
 ORS_API_KEY=your_openrouteservice_api_key
-```
+````
 
 ## Setting Up Detectro with Flask
 
@@ -163,9 +163,7 @@ pip install git+https://github.com/facebookresearch/detectron2.git
 
 Ensure your system meets the requirements for PyTorch and OpenCV.
 
-
 ### 5. Dataset and model setup
-
 
 ```env
 # OpenRouteService API Configuration
@@ -180,7 +178,6 @@ SECRET_KEY=your_secret_key_here
 **Note**: Get your free OpenRouteService API key from [heigit.org](https://heigit.org)
 
 ### 6. AI Model Setup
-
 
 #### Dataset Preparation
 

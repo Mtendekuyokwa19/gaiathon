@@ -129,10 +129,6 @@ def get_locations():
 
         "SELECT coordinates FROM location where isfull='yes'"
     ).fetchall()
-
-     
-    print(f"location{locations}")
-
     coords = []
 
     for row in locations:
@@ -183,7 +179,7 @@ def index():
 
 
 @bp.route("/locations")
-def locations():
+def locations():dash
     db = get_db()
     locations = db.execute("SELECT * FROM location").fetchall()
     print(locations)
@@ -291,27 +287,63 @@ def add_location():
     return render_template("dashboard/add.html")
 
 
-# def make_post(raw):
-#         try:
-#             if not raw.strip():
-#                 return "Please enter coordinates", 400
-#
-#             coords = []
-#             for line in raw.strip().splitlines():
-#                 if line.strip():  # Skip empty lines
-#                     lat, lon = map(float, line.split(","))
-#                     coords.append((lat, lon))
-#
-#             if len(coords) < 2:
-#                 return "Please enter at least 2 coordinates", 400
-#
-#             coords_str = ";".join([f"{lat},{lon}" for lat, lon in coords])
-#             return redirect(url_for("dashboard.path", coords_str=coords_str))
-#
-#         except ValueError as e:
-#             return f"Invalid coordinate format. Please use 'lat,lon' format: {e}", 400
-#         except Exception as e:
-#             return f"Error processing coordinates: {e}", 400
-#
-#         return render_template("dashboard/index.html")
+import os
+import datetime
+from werkzeug.utils import secure_filename
+from flask import request, flash, redirect, url_for, render_template
 
+# Configuration
+UPLOAD_FOLDER = "./uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "tiff", "tif"}
+MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@bp.route("/dumpsite", methods=["GET", "POST"])
+def dumpsite():
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file part", "error")
+            return redirect(request.url)
+
+        file = request.files["file"]
+
+        if file.filename == "":
+            flash("No selected file", "error")
+            return redirect(request.url)
+
+        if not allowed_file(file.filename):
+            flash("Invalid file type. Please upload an image file.", "error")
+            return redirect(request.url)
+
+        if file:
+            try:
+                # Create secure filename with timestamp
+                original_filename = secure_filename(file.filename)
+                name, ext = os.path.splitext(original_filename)
+                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"{name}_{timestamp}{ext}"
+
+                # Ensure upload directory exists
+                os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+                # Save file
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(file_path)
+
+                flash(
+                    f"Satellite image '{original_filename}' uploaded successfully!",
+                    "success",
+                )
+                detectedImage = main.detect_dumpsites(image_path=file_path)
+                print(f"{detectedImage} here is the thing")
+                return render_template("dashboard/dumpsite.html", path=detectedImage)
+
+            except Exception as e:
+                flash(f"Error uploading file: {str(e)}", "error")
+                return redirect(request.url)
+
+    return render_template("dashboard/dumpsite.html")
