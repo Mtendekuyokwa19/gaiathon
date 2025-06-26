@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Optimized Route</title>
+
+<title>WasteOptimizer-locations</title>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
@@ -31,9 +37,12 @@
       <section class="border rounded h-full w-1/6 flex justify-center">
         <ul class="flex gap-2 flex-col text-lg font-bold py-10">
           <li class=""><a href="/get_locations">Home</a></li>
-          <li><a href="/report">Report</a></li>
-          <li>Github</li>
+          <li><a href="/report">Reports</a></li>
+          <li><a href="/sensor">Bin Information</a></li>
+
           <li><a href="/locations">Locations</a></li>
+
+          <li><a href="/dumpsite">Discover Dumpsites</a></li>
         </ul>
       </section>
 <section class="flex w-5/6">
