@@ -1,13 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-
-<title>WasteOptimizer-locations</title>
-
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>WasteOptimizer-sensor_data</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
@@ -39,31 +33,29 @@
           <li class=""><a href="/get_locations">Home</a></li>
           <li><a href="/report">Reports</a></li>
           <li><a href="/sensor">Bin Information</a></li>
-
           <li><a href="/locations">Locations</a></li>
-
           <li><a href="/dumpsite">Discover Dumpsites</a></li>
+
         </ul>
       </section>
 <section class="flex w-5/6">
 <section class="w-5/6 px-4 p-2" >
 <nav class="flex p-2 border-2 gap-32 justify-evenly list-none">
-<li>  location_name </li>
-<li>  coordinates </li>
-<li>  owner </li>
-<li>  isfull </li>
-<li>  </li>
+<li>  time </li>
+<li>  date </li>
+<li>  location </li>
+<li>  ultrasonic_value </li>
+<li>  Dangerous_gas_level</li>
 </nav>
 <section>
-        {% for location in locations %}
+        {% for sensor in sensors %}
 <ul class="flex gap-20  p-2 justify-evenly ">
 
-<li> {{location[1]}}</li>
-<li> {{location[2]}}</li>
-<li> {{location[3]}}</li>
-<li> {{location[4]}}</li>
-<a class="text-red-600" href={{"delete/"+location[0]|string}}>delete</a>
-
+<li> {{sensor[1]}}</li>
+<li> {{sensor[2]}}</li>
+<li> {{sensor[3]}}</li>
+<li> {{sensor[4]}}</li>
+<li> {{sensor[5]}}</li>
 </ul>
         {% endfor %}
 <section>

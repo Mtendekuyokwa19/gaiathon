@@ -1,7 +1,10 @@
 from flask import Blueprint, flash, g, redirect, render_template, request, url_for
 from dotenv import dotenv_values
+from flaskr.detection import coordinates
 import sqlitecloud
 
+
+from detectro import main
 
 config = dotenv_values(".env")
 from werkzeug.exceptions import abort
@@ -17,9 +20,6 @@ import os
 DB_FILE = "data.db"
 
 
-conn = sqlitecloud.connect(
-    "sqlitecloud://crzzc2ilhz.g1.sqlite.cloud:8860/chinook.sqlite?apikey=dlSn7ORb8jFlFnsOKxFGhfJDmDvC7Sgb35bIaabNujA"
-)
 bp = Blueprint("dashboard", __name__)
 # Set your ORS API key here
 # ORS_API_KEY = os.getenv("HEIGHT") or "your-api-key-here"
@@ -125,8 +125,14 @@ def path():
 @bp.route("/get_locations")
 def get_locations():
     db = get_db()
-    locations = db.execute("SELECT coordinates FROM location").fetchall()
+    locations = db.execute(
+
+        "SELECT coordinates FROM location where isfull='yes'"
+    ).fetchall()
+
+     
     print(f"location{locations}")
+
     coords = []
 
     for row in locations:
@@ -160,8 +166,20 @@ def get_locations():
 def report():
     db = get_db()
     reports = db.execute("SELECT * FROM report").fetchall()
-    print(reports)
     return render_template("dashboard/reports.html", reports=reports)
+
+
+@bp.route("/sensor")
+def sensor():
+    db = get_db()
+    sensors = db.execute("SELECT * FROM sensor_data").fetchall()
+    print(sensors)
+    return render_template("dashboard/sensor.html", sensors=sensors)
+
+
+@bp.route("/")
+def index():
+    return render_template("base.html")
 
 
 @bp.route("/locations")
@@ -172,9 +190,106 @@ def locations():
     return render_template("dashboard/location.html", locations=locations)
 
 
-cursor = conn.execute("SELECT * FROM sensor_data;")
-result = cursor.fetchone()
-print(result)
+
+import os
+import datetime
+from werkzeug.utils import secure_filename
+from flask import request, flash, redirect, url_for, render_template
+
+# Configuration
+UPLOAD_FOLDER = "./uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "tiff", "tif"}
+MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@bp.route("/dumpsite", methods=["GET", "POST"])
+def dumpsite():
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file part", "error")
+            return redirect(request.url)
+
+        file = request.files["file"]
+
+        if file.filename == "":
+            flash("No selected file", "error")
+            return redirect(request.url)
+
+        if not allowed_file(file.filename):
+            flash("Invalid file type. Please upload an image file.", "error")
+            return redirect(request.url)
+
+        if file:
+            try:
+                # Create secure filename with timestamp
+                original_filename = secure_filename(file.filename)
+                name, ext = os.path.splitext(original_filename)
+                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"{name}_{timestamp}{ext}"
+
+                # Ensure upload directory exists
+                os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+                # Save file
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(file_path)
+
+                flash(
+                    f"Satellite image '{original_filename}' uploaded successfully!",
+                    "success",
+                )
+                detectedImage = main.detect_dumpsites(image_path=file_path)
+                print(f"{detectedImage} here is the thing")
+                return render_template("dashboard/dumpsite.html", path=detectedImage)
+
+            except Exception as e:
+                flash(f"Error uploading file: {str(e)}", "error")
+                return redirect(request.url)
+
+    return render_template("dashboard/dumpsite.html")
+
+@bp.route("/delete/<int:id>", methods=["GET"])
+def delete_route(id):
+    id = int(id)
+    db = get_db()
+    route = db.execute("SELECT * FROM location WHERE id = ?", (id,)).fetchone()
+
+    if route is None:
+        flash("Route not found.")
+
+    else:
+        db.execute("DELETE FROM location WHERE id = ?", (id,))
+        db.commit()
+        flash("Route deleted successfully.")
+
+    return redirect(url_for("dashboard.get_locations"))
+
+
+@bp.route("/add", methods=["GET", "POST"])
+def add_location():
+    if request.method == "POST":
+        location_name = request.form["location_name"]
+        coordinates = request.form["coordinates"]
+        owner = request.form["owner"]
+
+        if not location_name or not coordinates or not owner:
+            flash("Name, latitude, and longitude are required.")
+        else:
+            db = get_db()
+            db.execute(
+                "INSERT INTO location (location_name, coordinates, owner) VALUES ( ?, ?, ?)",
+                (location_name, coordinates, owner),
+            )
+            db.commit()
+            flash("Location added successfully!")
+            return redirect(url_for("dashboard.get_locations"))
+
+    return render_template("dashboard/add.html")
+
 
 # def make_post(raw):
 #         try:
@@ -199,3 +314,4 @@ print(result)
 #             return f"Error processing coordinates: {e}", 400
 #
 #         return render_template("dashboard/index.html")
+

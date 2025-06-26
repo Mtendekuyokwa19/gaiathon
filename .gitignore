@@ -1,7 +1,7 @@
 .venv/
 .env
 static/uploads/
-
+detectro/dataset
 *.pyc
 __pycache__/
 

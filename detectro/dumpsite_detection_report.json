@@ -1,0 +1,38 @@
+{
+  "image_path": "../landfill.jpg",
+  "timestamp": "2025-06-23T15:56:25",
+  "detection_results": {
+    "total_detections": 2,
+    "dumpsite_probability": 0.04,
+    "risk_level": "LOW",
+    "indicators": [
+      {
+        "class": "person",
+        "confidence": 0.48089343309402466,
+        "relative_size": 0.001142021850682795,
+        "location": [
+          353.73712158203125,
+          105.109130859375,
+          367.9353942871094,
+          122.04270935058594
+        ]
+      },
+      {
+        "class": "skateboard",
+        "confidence": 0.3398047089576721,
+        "relative_size": 0.02423018217086792,
+        "location": [
+          245.40879821777344,
+          147.0881805419922,
+          300.6347351074219,
+          239.4565887451172
+        ]
+      }
+    ],
+    "class_counts": {
+      "person": 1,
+      "skateboard": 1
+    },
+    "analysis": "Low probability of illegal dumping activity. Few or no waste indicators detected."
+  }
+}

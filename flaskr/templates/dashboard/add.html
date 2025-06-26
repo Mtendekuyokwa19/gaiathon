@@ -11,21 +11,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
 <body class="bg-[#fbf1c7] h-screen flex flex-col  justify-between">
-<!-- <form method="post"> -->
-<!--   <label for="username">Username</label> -->
-<!--   <input name="username" id="username" required /> -->
-<!--   <label for="password">Password</label> -->
-<!--   <input type="password" name="password" id="password" required /> -->
-<!--   <input type="submit" value="Register" /> -->
-<!-- </form> -->
 
 <nav class="bg-[#ebdbb2] p-4 flex border border-b-black border-b-2 justify-evenly ">
   <a href="/" class="text-lg font-bold">WasteOptimizer</a>
   <ul class="flex gap-2 text-md lowercase">
     {% if g.user %}
     <li><span>{{ g.user['username'] }}</span></li>
-
-<li><a href="/get_locations">Dashboard</a></li>
     <li><a href="{{ url_for('auth.logout') }}">Log Out</a> {% else %}</li>
 
     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
@@ -37,17 +28,17 @@
 </nav>
 
 <main class="flex justify-center flex-col items-center">
-<h1 class="font-bold uppercase text-lg">Create account</h1>
+<h1 class="font-bold uppercase text-lg">New Stop</h1>
 <form method="post" class="flex flex-col gap-2 bg-[#ebdbb2] p-5 rounded ">
-  <label for="username">Username</label>
-  <input class="rounded border bg-white" name="username" id="username"  required />
-  <label for="password">Password</label>
-  <input class="rounded bg-white border" type="password" name="password" id="password" required />
-  <input class="bg-[#0091ff] p-3 w-72 rounded-md text-black" type="submit" value="Register" />
+  <label for="location_name">location_name</label>
+  <input class="rounded border bg-white" name="location_name" id="location_name"  required />
 
-<!-- <button class="bg-[#0091ff] p-3 w-72 rounded-md text-black" type="submit"> -->
-<!-- <a href="/auth/register" class="flex gap-2 justify-center items-center"><span class="font-bold">🡪</span>Register</a> -->
-<!-- </button> -->
+  <label for="owner">owner</label>
+  <input class="rounded bg-white border" type="text" name="owner" id="owner" required />
+  <label for="coordinates">coordinates</label>
+  <input class="rounded bg-white border" type="text" name="coordinates" id="coordinates" required />
+<button type="submit">submit</button>
+
 </form>
 </main>
 
