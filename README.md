@@ -3,10 +3,16 @@
 Waste Management Optimizer is a web application designed to plan and visualize optimized waste collection routes. It uses geospatial tools, real-time height data, and a sleek UI to support environmentally conscious waste disposal.
 ![Photo of overall elements](./mini.png)
 
+<<<<<<< Ecofriendly
+[Mobile-app Guide](./EcoFriendlyApp/README.md)
+
+## 🚀 Features
+=======
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
 [![Detectron2](https://img.shields.io/badge/Detectron2-AI%20Detection-red.svg)](https://github.com/facebookresearch/detectron2)
+>>>>>>> master
 
 ![screenshot](./screenshot.png)
 
