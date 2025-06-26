@@ -170,6 +170,11 @@ def sensor():
     return render_template("dashboard/sensor.html", sensors=sensors)
 
 
+@bp.route("/")
+def index():
+    return render_template("base.html")
+
+
 @bp.route("/locations")
 def locations():
     db = get_db()

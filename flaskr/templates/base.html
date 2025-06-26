@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+<title>Waste-optimizerHome</title>
 <body class="bg-[#fbf1c7] h-screen flex flex-col  justify-between">
-	
 <nav class="bg-[#ebdbb2] p-4 flex border border-b-black border-b-2 justify-evenly ">
   <a href="/" class="text-lg font-bold">WasteOptimizer</a>
   <ul class="flex gap-2 text-md lowercase">
     {% if g.user %}
     <li><span>{{ g.user['username'] }}</span></li>
+
+<li><a href="/get_locations">Dashboard</a></li>
     <li><a href="{{ url_for('auth.logout') }}">Log Out</a> {% else %}</li>
 
     <li><a href="{{ url_for('auth.register') }}">Register</a></li>
