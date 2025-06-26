@@ -2,6 +2,8 @@
 
 Waste Management Optimizer is a web application designed to plan and visualize optimized waste collection routes. It uses geospatial tools, real-time height data, and a sleek UI to support environmentally conscious waste disposal.
 
+[Mobile-app Guide](./EcoFriendlyApp/README.md)
+
 ## 🚀 Features
 
 - Optimized multi-point routing using OpenRouteService
