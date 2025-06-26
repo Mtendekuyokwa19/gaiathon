@@ -8,9 +8,7 @@ from flask import current_app, g
 from dotenv import dotenv_values
 
 config = dotenv_values(".env")
-conn = sqlitecloud.connect(
-    config["SQLITE"]
-)
+conn = sqlitecloud.connect(config["SQLITE"])
 
 
 def get_db():

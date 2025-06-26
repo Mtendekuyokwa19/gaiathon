@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html>
   <head>
-<title>WasteOptimizer-results</title>
+    <title>WasteOptimizer-results</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}" />
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link
@@ -43,7 +47,6 @@
 
         <li><a href="{{ url_for('auth.register') }}">Register</a></li>
         <li>
-
           <a href="{{ url_for('auth.login') }}">Log In</a>
           {% endif %}
         </li>
@@ -57,7 +60,6 @@
           <li><a href="/sensor">Bin Information</a></li>
           <li><a href="/locations">Locations</a></li>
           <li><a href="/dumpsite">Discover Dumpsites</a></li>
-
         </ul>
       </section>
 

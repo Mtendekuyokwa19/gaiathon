@@ -126,7 +126,8 @@ def path():
 def get_locations():
     db = get_db()
     locations = db.execute(
-        "SELECT coordinates FROM location WHERE isfull='yes'"
+
+        "SELECT coordinates FROM location where isfull='yes'"
     ).fetchall()
     coords = []
 
@@ -178,12 +179,74 @@ def index():
 
 
 @bp.route("/locations")
-def locations():
+def locations():dash
     db = get_db()
     locations = db.execute("SELECT * FROM location").fetchall()
     print(locations)
     return render_template("dashboard/location.html", locations=locations)
 
+
+
+import os
+import datetime
+from werkzeug.utils import secure_filename
+from flask import request, flash, redirect, url_for, render_template
+
+# Configuration
+UPLOAD_FOLDER = "./uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "tiff", "tif"}
+MAX_FILE_SIZE = 16 * 1024 * 1024  # 16MB
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@bp.route("/dumpsite", methods=["GET", "POST"])
+def dumpsite():
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file part", "error")
+            return redirect(request.url)
+
+        file = request.files["file"]
+
+        if file.filename == "":
+            flash("No selected file", "error")
+            return redirect(request.url)
+
+        if not allowed_file(file.filename):
+            flash("Invalid file type. Please upload an image file.", "error")
+            return redirect(request.url)
+
+        if file:
+            try:
+                # Create secure filename with timestamp
+                original_filename = secure_filename(file.filename)
+                name, ext = os.path.splitext(original_filename)
+                timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+                filename = f"{name}_{timestamp}{ext}"
+
+                # Ensure upload directory exists
+                os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+                # Save file
+                file_path = os.path.join(UPLOAD_FOLDER, filename)
+                file.save(file_path)
+
+                flash(
+                    f"Satellite image '{original_filename}' uploaded successfully!",
+                    "success",
+                )
+                detectedImage = main.detect_dumpsites(image_path=file_path)
+                print(f"{detectedImage} here is the thing")
+                return render_template("dashboard/dumpsite.html", path=detectedImage)
+
+            except Exception as e:
+                flash(f"Error uploading file: {str(e)}", "error")
+                return redirect(request.url)
+
+    return render_template("dashboard/dumpsite.html")
 
 @bp.route("/delete/<int:id>", methods=["GET"])
 def delete_route(id):
@@ -199,7 +262,7 @@ def delete_route(id):
         db.commit()
         flash("Route deleted successfully.")
 
-    return redirect(url_for("dashboard.get_locations"))
+    return redirect(url_for("dashboard.locations"))
 
 
 @bp.route("/add", methods=["GET", "POST"])
@@ -219,7 +282,7 @@ def add_location():
             )
             db.commit()
             flash("Location added successfully!")
-            return redirect(url_for("dashboard.get_locations"))
+            return redirect(url_for("dashboard.locations"))
 
     return render_template("dashboard/add.html")
 
