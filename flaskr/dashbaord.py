@@ -122,7 +122,7 @@ def path():
 def get_locations():
     db = get_db()
     locations = db.execute(
-        "SELECT coordinates FROM location where isfull='yes'"
+        "SELECT coordinates FROM location"
     ).fetchall()
     coords = []
 
