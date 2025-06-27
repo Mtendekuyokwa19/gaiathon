@@ -127,6 +127,7 @@ def get_locations():
     db = get_db()
     locations = db.execute(
 
+
         "SELECT coordinates FROM location where isfull='yes'"
     ).fetchall()
     coords = []

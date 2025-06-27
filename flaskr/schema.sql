@@ -1,6 +1,7 @@
 
 DROP TABLE IF EXISTS user;
 DROP TABLE IF EXISTS report;
+DROP TABLE IF EXISTS sensor_data;
 DROP TABLE IF EXISTS location;
 DROP TABLE IF EXISTS post;
 
@@ -52,3 +53,8 @@ INSERT INTO location(location_name, coordinates, owner, isfull) VALUES
 ("Soche", "-15.8255,35.0341", "admin", "no"),
 ("Chilomoni", "-15.8212,35.0121", "admin", "yes"),
 ("Ndirande", "-15.7835,35.0446", "admin","yes" );
+INSERT INTO sensor_data (time, date, location, ultrasonic_value, gas_sensor_value) VALUES
+('08:00:00', '2025-06-26', 'Mubas', 40.5, 0.75),
+('09:15:00', '2025-06-26', 'Mubas', 42.1, 0.80),
+('10:30:00', '2025-06-26', 'Limbe', 38.7, 0.65),
+('11:45:00', '2025-06-26', 'chitawira', 41.0, 0.72);

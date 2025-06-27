@@ -2,6 +2,8 @@
 .env
 static/uploads/
 detectro/dataset
+detectro/output/
+output/
 *.pyc
 __pycache__/
 
