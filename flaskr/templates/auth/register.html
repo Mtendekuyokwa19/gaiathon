@@ -1,55 +1,125 @@
-<!-- <form method="post"> -->
-<!--   <label for="username">Username</label> -->
-<!--   <input name="username" id="username" required /> -->
-<!--   <label for="password">Password</label> -->
-<!--   <input type="password" name="password" id="password" required /> -->
-<!--   <input type="submit" value="Register" /> -->
-<!-- </form> -->
-
 <!DOCTYPE html>
-<title>{% block title %}{% endblock %} - Flaskr</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
-<body class="bg-[#fbf1c7] h-screen flex flex-col  justify-between">
-<!-- <form method="post"> -->
-<!--   <label for="username">Username</label> -->
-<!--   <input name="username" id="username" required /> -->
-<!--   <label for="password">Password</label> -->
-<!--   <input type="password" name="password" id="password" required /> -->
-<!--   <input type="submit" value="Register" /> -->
-<!-- </form> -->
+<html>
+<head>
+  <title>Register - WasteOptimizer</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <style>
+    :root {
+      --everforest-bg0: #272e33;
+      --everforest-bg1: #2e383c;
+      --everforest-bg2: #374145;
+      --everforest-fg: #d3c6aa;
+      --everforest-green: #a7c080;
+    }
+    body {
+      background-color: var(--everforest-bg0);
+      color: var(--everforest-fg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-container {
+      background-color: var(--everforest-bg1);
+      border: 1px solid var(--everforest-bg2);
+      border-radius: 0.5rem;
+    }
+    .form-input {
+      background-color: var(--everforest-bg0);
+      border: 1px solid var(--everforest-bg2);
+      color: var(--everforest-fg);
+      transition: all 0.2s ease;
+    }
+    .form-input:focus {
+      border-color: var(--everforest-green);
+      outline: none;
+    }
+    .btn-primary {
+      background-color: var(--everforest-green);
+      color: var(--everforest-bg0);
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body class="everforest-bg everforest-text">
+  <!-- Navigation -->
+  <nav class="everforest-bg-light border-b border-gray-600">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center space-x-2">
+          <svg class="icon text-green-400" viewBox="0 0 24 24">
+            <path d="M3 6h18l-2 13H5L3 6z"></path>
+          </svg>
+          <a href="/" class="text-xl font-bold">WasteOptimizer</a>
+        </div>
+        <div class="flex items-center space-x-6">
+          <a href="{{ url_for('auth.login') }}" class="text-sm hover:text-green-400 transition-colors">Login</a>
+        </div>
+      </div>
+    </div>
+  </nav>
 
-<nav class="bg-[#ebdbb2] p-4 flex border border-b-black border-b-2 justify-evenly ">
-  <a href="/" class="text-lg font-bold">WasteOptimizer</a>
-  <ul class="flex gap-2 text-md lowercase">
-    {% if g.user %}
-    <li><span>{{ g.user['username'] }}</span></li>
-    <li><a href="{{ url_for('auth.logout') }}">Log Out</a> {% else %}</li>
+  <!-- Main Content -->
+  <main class="flex-1 flex items-center justify-center p-6">
+    <div class="w-full max-w-md">
+      <div class="flex items-center justify-center mb-6">
+        <svg class="w-10 h-10 text-green-400 mr-2" viewBox="0 0 24 24">
+          <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <h1 class="text-2xl font-bold">CREATE ACCOUNT</h1>
+      </div>
 
-    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
-    <li>
-      <a href="{{ url_for('auth.login') }}">Log In</a>
-      {% endif %}
-    </li>
-  </ul>
-</nav>
+      <form method="post" class="form-container p-8 space-y-6">
+        <div class="space-y-2">
+          <label for="username" class="block text-sm font-medium">Username</label>
+          <input 
+            class="form-input w-full px-3 py-2 rounded" 
+            name="username" 
+            id="username" 
+            required
+            placeholder="Enter your username"
+          />
+        </div>
 
-<main class="flex justify-center flex-col items-center">
-<h1 class="font-bold uppercase text-lg">Create account</h1>
-<form method="post" class="flex flex-col gap-2 bg-[#ebdbb2] p-5 rounded ">
-  <label for="username">Username</label>
-  <input class="rounded border bg-white" name="username" id="username"  required />
-  <label for="password">Password</label>
-  <input class="rounded bg-white border" type="password" name="password" id="password" required />
-  <input class="bg-[#0091ff] p-3 w-72 rounded-md text-black" type="submit" value="Register" />
+        <div class="space-y-2">
+          <label for="password" class="block text-sm font-medium">Password</label>
+          <input 
+            class="form-input w-full px-3 py-2 rounded" 
+            type="password" 
+            name="password" 
+            id="password" 
+            required
+            placeholder="Enter your password"
+          />
+        </div>
 
-<!-- <button class="bg-[#0091ff] p-3 w-72 rounded-md text-black" type="submit"> -->
-<!-- <a href="/auth/register" class="flex gap-2 justify-center items-center"><span class="font-bold">🡪</span>Register</a> -->
-<!-- </button> -->
-</form>
-</main>
+        <button 
+          type="submit" 
+          class="btn-primary w-full py-3 px-4 rounded-md font-bold flex items-center justify-center"
+        >
+          <span>Register</span>
+          <svg class="w-5 h-5 ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </button>
 
-<footer class="border border-t-2 bg-[#ebdbb2] p-2 ">
-<p>2024 Build-green</p>
-</footer>
+        <div class="text-center text-sm">
+          Already have an account? 
+          <a href="{{ url_for('auth.login') }}" class="text-green-400 hover:underline">Login here</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="everforest-bg-light border-t border-gray-600 py-4">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <p class="text-sm text-gray-400">© 2024 Build-green</p>
+    </div>
+  </footer>
 </body>
+</html>
