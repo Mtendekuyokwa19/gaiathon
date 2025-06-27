@@ -3,7 +3,6 @@ import os
 from . import db
 from flask import Flask
 from . import auth
-from . import blog
 from . import dashbaord
 from . import detection
 
@@ -17,7 +16,6 @@ def create_app(test_config=None):
     db.init_app(app)
     app.register_blueprint(auth.bp)
     app.register_blueprint(detection.bp)
-    app.register_blueprint(blog.bp)
     app.register_blueprint(dashbaord.bp)
     app.add_url_rule("/", endpoint="index")
     if test_config is None:
@@ -29,8 +27,5 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route("/hello")
-    def hello():
-        return "hello"
 
     return app

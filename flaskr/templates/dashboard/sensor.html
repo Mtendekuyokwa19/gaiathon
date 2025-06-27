@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Bin Information - WasteOptimizer</title>
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
@@ -47,6 +48,7 @@
           {% else %}
           <a href="{{ url_for('auth.register') }}" class="text-sm hover:text-green-400 transition-colors">Register</a>
           <a href="{{ url_for('auth.login') }}" class="text-sm hover:text-green-400 transition-colors">Login</a>
+
           {% endif %}
         </div>
       </div>

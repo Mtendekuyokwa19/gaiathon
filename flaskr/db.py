@@ -1,8 +1,14 @@
 import sqlite3
+
+import sqlitecloud
 from datetime import datetime
 import click
 
 from flask import current_app, g
+from dotenv import dotenv_values
+
+config = dotenv_values(".env")
+conn = sqlitecloud.connect(config["SQLITE"])
 
 
 def get_db():
@@ -12,7 +18,7 @@ def get_db():
         )
         g.db.row_factory = sqlite3.Row
 
-    return g.db
+    return conn
 
 
 def init_db():
